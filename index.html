@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>J.A.R.V.I.S.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;
+  background:#02040a;
+  color:#dffcff;
+  font-family:Arial,sans-serif;
+  overflow-x:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at center,#07304b,transparent 35%),
+    linear-gradient(#00d9ff10 1px,transparent 1px),
+    linear-gradient(90deg,#00d9ff10 1px,transparent 1px);
+  background-size:auto,35px 35px,35px 35px;
+}
+.app{
+  max-width:1250px;
+  margin:auto;
+  padding:12px;
+}
+header,.card{
+  border:1px solid #00d9ff35;
+  background:#06101bdd;
+  backdrop-filter:blur(15px);
+  border-radius:18px;
+}
+header{
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  font-size:20px;
+  font-weight:bold;
+  letter-spacing:5px;
+}
+.sub{
+  color:#66828e;
+  font-size:9px;
+  letter-spacing:1px;
+  margin-top:3px;
+}
+.online{
+  color:#4dffad;
+  font-size:11px;
+}
+.led{
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#4dffad;
+  box-shadow:0 0 12px #4dffad;
+  margin-right:5px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1.35fr .65fr;
+  gap:12px;
+  margin-top:12px;
+}
+.card{
+  padding:15px;
+}
+.hero{
+  min-height:670px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+.hud{
+  position:absolute;
+  top:15px;
+  left:15px;
+  right:15px;
+  display:flex;
+  justify-content:space-between;
+  color:#65818d;
+  font-size:9px;
+  letter-spacing:1px;
+}
+.core{
+  width:min(52vw,360px);
+  aspect-ratio:1;
+  position:relative;
+  display:grid;
+  place-items:center;
+  margin:30px 0 20px;
+}
+.core i{
+  position:absolute;
+  border-radius:50%;
+  inset:0;
+  border:1px solid #00d9ff88;
+}
+.r1{
+  transform:rotate(20deg);
+  animation:spin 9s linear infinite;
+  border-left-color:transparent!important;
+  border-right-color:#a35cff!important;
+}
+.r2{
+  inset:8%!important;
+  transform:rotate(-35deg);
+  animation:spin 6s linear infinite reverse;
+  border-top-color:transparent!important;
+}
+.r3{
+  inset:17%!important;
+  animation:spin 4s linear infinite;
+  border-style:dashed!important;
+}
+.r4{
+  inset:25%!important;
+  border-width:2px!important;
+}
+.core:after{
+  content:"";
+  width:25%;
+  height:25%;
+  border-radius:50%;
+  background:#eaffff;
+  box-shadow:
+    0 0 20px white,
+    0 0 55px #00d9ff,
+    0 0 110px #007cff;
+  animation:pulse 1.8s infinite alternate;
+}
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+@keyframes pulse{
+  to{transform:scale(1.12)}
+}
+.title{
+  font-size:28px;
+  letter-spacing:8px;
+}
+.tag{
+  color:#668692;
+  font-size:10px;
+  letter-spacing:2px;
+  margin-top:6px;
+}
+.wave{
+  height:30px;
+  width:80%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:3px;
+  margin:15px;
+}
+.wave b{
+  width:3px;
+  height:8px;
+  background:#00d9ff;
+  box-shadow:0 0 8px #00d9ff;
+  animation:wave .8s infinite alternate;
+}
+.wave b:nth-child(2n){animation-delay:.1s}
+.wave b:nth-child(3n){animation-delay:.2s}
+@keyframes wave{
+  to{height:25px}
+}
+.row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.btn{
+  border:1px solid #00d9ff45;
+  background:#071521;
+  color:#dffcff;
+  padding:10px 13px;
+  border-radius:11px;
+  cursor:pointer;
+}
+.btn:hover{
+  border-color:#00d9ff;
+  box-shadow:0 0 15px #00d9ff22;
+}
+.primary{
+  border-color:#00d9ff88;
+  background:#00d9ff15;
+}
+.side{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.card h2{
+  color:#8cefff;
+  font-size:10px;
+  letter-spacing:2px;
+  margin-bottom:11px;
+}
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.stat{
+  padding:11px;
+  background:#0005;
+  border:1px solid #00d9ff15;
+  border-radius:10px;
+}
+.stat small{
+  color:#607985;
+  font-size:9px;
+}
+.stat strong{
+  display:block;
+  margin-top:4px;
+  font-size:14px;
+}
+.green{color:#4dffad}
+.chat{
+  height:250px;
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+.msg{
+  padding:9px;
+  border-radius:10px;
+  font-size:12px;
+  line-height:1.4;
+}
+.ai{
+  background:#00d9ff09;
+  border-left:2px solid #00d9ff;
+}
+.me{
+  background:#a35cff0c;
+  border-left:2px solid #a35cff;
+  align-self:flex-end;
+}
+.compose{
+  display:flex;
+  gap:6px;
+  margin-top:8px;
+}
+input{
+  min-width:0;
+  width:100%;
+  background:#020910;
+  border:1px solid #00d9ff28;
+  color:white;
+  border-radius:10px;
+  padding:10px;
+  outline:none;
+}
+.server{
+  display:grid;
+  grid-template-columns:1fr 90px;
+  gap:7px;
+}
+.full{
+  grid-column:1/-1;
+}
+.statusbox{
+  margin-top:8px;
+  padding:10px;
+  background:#0005;
+  border:1px solid #00d9ff15;
+  border-radius:10px;
+  font-size:11px;
+}
+.commands{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+.commands .btn{
+  text-align:left;
+  font-size:11px;
+}
+footer{
+  text-align:center;
+  color:#3f5964;
+  font-size:9px;
+  padding:14px;
+}
+@media(max-width:850px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+  .hero{
+    min-height:560px;
+  }
+  .core{
+    width:min(76vw,330px);
+  }
+}
+@media(max-width:500px){
+  .title{
+    font-size:22px;
+  }
+  .hero{
+    min-height:500px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div>
+    <div class="logo">J.A.R.V.I.S.</div>
+    <div class="sub">
+      JUST A RATHER VERY INTELLIGENT SYSTEM
+    </div>
+  </div>
+  <div class="online">
+    <span class="led"></span>
+    <span id="systemStatus">ONLINE</span>
+  </div>
+</header>
+<div class="grid">
+<section class="card hero">
+  <div class="hud">
+    <span>JARVIS CORE // ONLINE</span>
+    <span id="clock">--:--:--</span>
+  </div>
+  <div class="core">
+    <i class="r1"></i>
+    <i class="r2"></i>
+    <i class="r3"></i>
+    <i class="r4"></i>
+  </div>
+  <h1 class="title">JARVIS</h1>
+  <div class="tag" id="state">
+    AWAITING COMMAND
+  </div>
+  <div class="wave" id="wave"></div>
+  <div class="row">
+    <button class="btn primary" id="mic">
+      🎙 TALK TO JARVIS
+    </button>
+    <button class="btn" onclick="speak('JARVIS systems are operational.')">
+      🔊 TEST VOICE
+    </button>
+  </div>
+</section>
+<aside class="side">
+<section class="card">
+<h2>SYSTEM TELEMETRY</h2>
+<div class="stats">
+<div class="stat">
+<small>TIME</small>
+<strong id="time2">--</strong>
+</div>
+<div class="stat">
+<small>NETWORK</small>
+<strong class="green">READY</strong>
+</div>
+<div class="stat">
+<small>AI LINK</small>
+<strong id="aiStatus">LOCAL</strong>
+</div>
+<div class="stat">
+<small>MINECRAFT</small>
+<strong id="mcStatus">OFFLINE</strong>
+</div>
+</div>
+</section>
+<section class="card">
+<h2>MINECRAFT CONNECTION</h2>
+<div class="server">
+<input
+id="host"
+placeholder="Server address"
+>
+<input
+id="port"
+value="25565"
+inputmode="numeric"
+placeholder="Port"
+>
+<input
+class="full"
+id="botName"
+value="JARVIS_Bot"
+placeholder="Bot username"
+>
+<button
+class="btn primary"
+onclick="mcJoin()"
+>
+JOIN SERVER
+</button>
+<button
+class="btn"
+onclick="mcLeave()"
+>
+LEAVE
+</button>
+</div>
+<div class="statusbox">
+BOT:
+<span id="mcText">
+Not connected
+</span>
+</div>
+</section>
+<section class="card">
+<h2>CONVERSATION</h2>
+<div class="chat" id="chat">
+<div class="msg ai">
+JARVIS: Systems initialized. Awaiting your command.
+</div>
+</div>
+<div class="compose">
+<input
+id="input"
+placeholder="Speak or type a command..."
+onkeydown="if(event.key==='Enter')send()"
+>
+<button
+class="btn primary"
+onclick="send()"
+>
+SEND
+</button>
+</div>
+</section>
+<section class="card">
+<h2>COMMANDS</h2>
+<div class="commands">
+<button class="btn" onclick="quick('System status')">
+⚙ System status
+</button>
+<button class="btn" onclick="quick('What time is it?')">
+🕐 Time
+</button>
+<button class="btn" onclick="quick('Run diagnostics')">
+◉ Diagnostics
+</button>
+<button class="btn" onclick="speak('How may I assist you?')">
+🔊 Speak
+</button>
+</div>
+</section>
+</aside>
+</div>
+<footer>
+JARVIS // CONTROL SYSTEM
+</footer>
+</div>
+<script>
+const API =
+(localStorage.getItem("JARVIS_API") || "")
+.replace(/\/$/,"");
+const chat =
+document.getElementById("chat");
+const state =
+document.getElementById("state");
+const mcText =
+document.getElementById("mcText");
+const mcStatus =
+document.getElementById("mcStatus");
+const aiStatus =
+document.getElementById("aiStatus");
+function addMessage(text,type="ai"){
+  const message =
+  document.createElement("div");
+  message.className =
+  "msg " + type;
+  message.textContent =
+  text;
+  chat.appendChild(message);
+  chat.scrollTop =
+  chat.scrollHeight;
+}
+function speak(text){
+  if(!("speechSynthesis" in window)){
+    return;
+  }
+  speechSynthesis.cancel();
+  const voice =
+  new SpeechSynthesisUtterance(text);
+  voice.rate = .95;
+  voice.pitch = .9;
+  speechSynthesis.speak(voice);
+}
+function quick(text){
+  document.getElementById("input").value =
+  text;
+  send();
+}
+async function send(){
+  const input =
+  document.getElementById("input");
+  const question =
+  input.value.trim();
+  if(!question){
+    return;
+  }
+  input.value = "";
+  addMessage(
+    "YOU: " + question,
+    "me"
+  );
+  state.textContent =
+  "PROCESSING";
+  if(API){
+    try{
+      const response =
+      await fetch(
+        API + "/api/chat",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+            "application/json"
+          },
+          body:JSON.stringify({
+            message:question
+          })
+        }
+      );
+      const data =
+      await response.json();
+      const reply =
+      data.reply ||
+      "I did not receive a response.";
+      addMessage(
+        "JARVIS: " + reply
+      );
+      speak(reply);
+      aiStatus.textContent =
+      "ONLINE";
+      state.textContent =
+      "READY";
+      return;
+    }catch(error){
+      aiStatus.textContent =
+      "OFFLINE";
+    }
+  }
+  const lower =
+  question.toLowerCase();
+  let reply =
+  "I am ready. Connect the JARVIS backend for full AI capabilities.";
+  if(lower.includes("time")){
+    reply =
+    "The current time is " +
+    new Date().toLocaleTimeString();
+  }
+  else if(lower.includes("status")){
+    reply =
+    "All local JARVIS interface systems are operational.";
+  }
+  else if(lower.includes("diagnostic")){
+    reply =
+    "Diagnostics complete. Interface systems are OK.";
+  }
+  addMessage(
+    "JARVIS: " + reply
+  );
+  speak(reply);
+  state.textContent =
+  "READY";
+}
+async function mcJoin(){
+  const host =
+  document.getElementById("host").value.trim();
+  const port =
+  Number(
+    document.getElementById("port").value ||
+    25565
+  );
+  const username =
+  document.getElementById("botName").value.trim() ||
+  "JARVIS_Bot";
+  if(!host){
+    mcText.textContent =
+    "Enter a server address first.";
+    return;
+  }
+  if(!API){
+    mcText.textContent =
+    "Backend URL is not configured.";
+    return;
+  }
+  mcText.textContent =
+  "Connecting...";
+  mcStatus.textContent =
+  "CONNECTING";
+  try{
+    const response =
+    await fetch(
+      API + "/api/minecraft/join",
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":
+          "application/json"
+        },
+        body:JSON.stringify({
+          host,
+          port,
+          username
+        })
+      }
+    );
+    const data =
+    await response.json();
+    mcText.textContent =
+    data.message ||
+    data.error ||
+    "Connection started.";
+    mcStatus.textContent =
+    data.connected ?
+    "ONLINE" :
+    "CONNECTING";
+  }catch(error){
+    mcText.textContent =
+    "Backend unavailable";
+    mcStatus.textContent =
+    "OFFLINE";
+  }
+}
+async function mcLeave(){
+  if(!API){
+    mcText.textContent =
+    "Backend URL is not configured.";
+    return;
+  }
+  try{
+    const response =
+    await fetch(
+      API + "/api/minecraft/leave",
+      {
+        method:"POST"
+      }
+    );
+    const data =
+    await response.json();
+    mcText.textContent =
+    data.message ||
+    "Disconnected";
+    mcStatus.textContent =
+    "OFFLINE";
+  }catch(error){
+    mcText.textContent =
+    "Backend unavailable";
+  }
+}
+function listen(){
+  const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+  if(!SpeechRecognition){
+    addMessage(
+      "JARVIS: Voice recognition is not supported by this browser."
+    );
+    return;
+  }
+  const recognition =
+  new SpeechRecognition();
+  recognition.lang =
+  "en-US";
+  recognition.interimResults =
+  false;
+  state.textContent =
+  "LISTENING";
+  recognition.onresult =
+  function(event){
+    document.getElementById("input").value =
+    event.results[0][0].transcript;
+    send();
+  };
+  recognition.onerror =
+  function(){
+    state.textContent =
+    "READY";
+  };
+  recognition.onend =
+  function(){
+    state.textContent =
+    "READY";
+  };
+  recognition.start();
+}
+document.getElementById("mic")
+.onclick =
+listen;
+setInterval(
+function(){
+  const now =
+  new Date();
+  const time =
+  now.toLocaleTimeString();
+  document.getElementById("clock")
+  .textContent =
+  time;
+  document.getElementById("time2")
+  .textContent =
+  time;
+},
+1000
+);
+for(
+  let i=0;
+  i<26;
+  i++
+){
+  const bar =
+  document.createElement("b");
+  document.getElementById("wave")
+  .appendChild(bar);
+}
+</script>
+</body>
+</html>
